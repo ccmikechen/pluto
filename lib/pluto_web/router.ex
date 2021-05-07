@@ -21,7 +21,7 @@ defmodule PlutoWeb.Router do
 
     scope "/" do
       pipe_through [:fetch_session, :protect_from_forgery]
-      live_dashboard "/dashboard", metrics: PlutoWeb.Telemetry
+      live_dashboard "/dashboard", metrics: PlutoWeb.Telemetry ,ecto_repos: [Pluto.Repo]
     end
   end
 end
