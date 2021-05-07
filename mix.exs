@@ -49,7 +49,8 @@ defmodule Pluto.MixProject do
       {:absinthe_relay, "~> 1.5.1"},
       {:dataloader, "~> 1.0.8"},
       {:absinthe_error_payload, "~> 1.1.3"},
-      {:credo, "~> 1.5.5", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.5.5", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
 
