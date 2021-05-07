@@ -42,7 +42,13 @@ defmodule Pluto.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:absinthe, "~> 1.6.4"},
+      {:absinthe_phoenix, "~> 2.0.1"},
+      {:absinthe_plug, "~> 1.5.8"},
+      {:absinthe_relay, "~> 1.5.1"},
+      {:dataloader, "~> 1.0.8"},
+      {:absinthe_error_payload, "~> 1.1.3"}
     ]
   end
 
