@@ -16,6 +16,8 @@ defmodule Pluto.DataCase do
 
   use ExUnit.CaseTemplate
 
+  alias Ecto.Adapters.SQL
+
   using do
     quote do
       alias Pluto.Repo
@@ -28,10 +30,10 @@ defmodule Pluto.DataCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Pluto.Repo)
+    :ok = SQL.Sandbox.checkout(Pluto.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Pluto.Repo, {:shared, self()})
+      SQL.Sandbox.mode(Pluto.Repo, {:shared, self()})
     end
 
     :ok

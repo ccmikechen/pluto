@@ -1,0 +1,17 @@
+"Represents a schema"
+schema {
+  query: RootQueryType
+}
+
+interface Node {
+  "The ID of the object."
+  id: ID!
+}
+
+type RootQueryType {
+  node(
+    "The ID of an object."
+    id: ID!
+  ): Node
+  isHealthy: Boolean!
+}
