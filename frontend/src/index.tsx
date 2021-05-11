@@ -1,12 +1,18 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import RelayEnvironment from './relay/RelayEnvironment'
+import { RelayEnvironmentProvider } from 'react-relay'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <RelayEnvironmentProvider environment={RelayEnvironment}>
+      <Suspense fallback={'Loading...'}>
+        <App />
+      </Suspense>
+    </RelayEnvironmentProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )
