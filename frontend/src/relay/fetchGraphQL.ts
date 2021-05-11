@@ -1,7 +1,9 @@
 import { Variables } from 'relay-runtime'
 
+const API_URL = process.env.REACT_APP_API_URL
+
 async function fetchGraphQL(text: string | null | undefined, variables: Variables) {
-  const response = await fetch('http://localhost:4000/api', {
+  const response = await fetch(`${API_URL}/api`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
