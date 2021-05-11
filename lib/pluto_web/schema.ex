@@ -18,5 +18,9 @@ defmodule PlutoWeb.Schema do
           {:error, "Unknown node"}
       end)
     end
+
+    field :is_healthy, non_null(:boolean) do
+      resolve(fn _, _ -> {:ok, true} end)
+    end
   end
 end
