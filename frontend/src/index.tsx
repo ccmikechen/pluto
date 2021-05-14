@@ -5,13 +5,28 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import RelayEnvironment from './relay/RelayEnvironment'
 import { RelayEnvironmentProvider } from 'react-relay'
+import { ThemeProvider } from '@material-ui/styles'
+import { createMuiTheme } from '@material-ui/core'
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#FFFFFF',
+    },
+    text: {
+      primary: '#D0D0DE',
+    },
+  },
+})
 
 ReactDOM.render(
   <React.StrictMode>
     <RelayEnvironmentProvider environment={RelayEnvironment}>
-      <Suspense fallback={'Loading...'}>
-        <App />
-      </Suspense>
+      <ThemeProvider theme={theme}>
+        <Suspense fallback={'Loading...'}>
+          <App />
+        </Suspense>
+      </ThemeProvider>
     </RelayEnvironmentProvider>
   </React.StrictMode>,
   document.getElementById('root')

@@ -8,10 +8,27 @@ interface Node {
   id: ID!
 }
 
+type Post implements Node {
+  "The ID of an object"
+  id: ID!
+
+  content: String!
+
+  insertedAt: NaiveDateTime!
+}
+
 type RootQueryType {
+  listPosts: [Post!]!
   node(
     "The ID of an object."
     id: ID!
   ): Node
   isHealthy: Boolean!
 }
+
+"""
+The `Naive DateTime` scalar type represents a naive date and time without
+timezone. The DateTime appears in a JSON response as an ISO8601 formatted
+string.
+"""
+scalar NaiveDateTime

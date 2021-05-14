@@ -2,15 +2,16 @@ defmodule PlutoWeb.Schema.Wall do
   @moduledoc false
 
   use Absinthe.Schema.Notation
+  use Absinthe.Relay.Schema.Notation, :modern
 
   alias PlutoWeb.Resolvers.Wall
 
-  object :post do
+  node object(:post) do
     field :content, non_null(:string)
-    field :inserted_at, :naive_datetime
+    field :inserted_at, non_null(:naive_datetime)
   end
 
   object :wall_queries do
-    field :list_posts, list_of(:post), resolve: &Wall.posts/2
+    field :list_posts, non_null(list_of(non_null(:post))), resolve: &Wall.posts/2
   end
 end
