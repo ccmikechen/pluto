@@ -6,12 +6,16 @@ defmodule PlutoWeb.Schema.Wall do
 
   alias PlutoWeb.Resolvers.Wall
 
+  connection(node_type: :post)
+
   node object(:post) do
     field :content, non_null(:string)
     field :inserted_at, non_null(:naive_datetime)
   end
 
   object :wall_queries do
-    field :list_posts, non_null(list_of(non_null(:post))), resolve: &Wall.posts/2
+    connection field :list_posts, node_type: :post do
+      resolve(&Wall.posts/2)
+    end
   end
 end
