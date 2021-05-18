@@ -4,20 +4,26 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type HomeQueryVariables = {};
-export type HomeQueryResponse = {
-    readonly " $fragmentRefs": FragmentRefs<"Wall_root">;
+export type PostListPaginationQueryVariables = {
+    count?: number | null;
+    cursor?: string | null;
 };
-export type HomeQuery = {
-    readonly response: HomeQueryResponse;
-    readonly variables: HomeQueryVariables;
+export type PostListPaginationQueryResponse = {
+    readonly " $fragmentRefs": FragmentRefs<"PostList_root">;
+};
+export type PostListPaginationQuery = {
+    readonly response: PostListPaginationQueryResponse;
+    readonly variables: PostListPaginationQueryVariables;
 };
 
 
 
 /*
-query HomeQuery {
-  ...Wall_root
+query PostListPaginationQuery(
+  $count: Int = 10
+  $cursor: String
+) {
+  ...PostList_root_1G22uz
 }
 
 fragment PostListItem_post on Post {
@@ -26,8 +32,8 @@ fragment PostListItem_post on Post {
   insertedAt
 }
 
-fragment PostList_root on RootQueryType {
-  posts: listPosts(first: 10) {
+fragment PostList_root_1G22uz on RootQueryType {
+  posts: listPosts(first: $count, after: $cursor) {
     edges {
       node {
         id
@@ -42,31 +48,55 @@ fragment PostList_root on RootQueryType {
     }
   }
 }
-
-fragment Wall_root on RootQueryType {
-  ...PostList_root
-}
 */
 
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "Literal",
+    "defaultValue": 10,
+    "kind": "LocalArgument",
+    "name": "count"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "cursor"
+  }
+],
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "cursor"
+  },
+  {
+    "kind": "Variable",
     "name": "first",
-    "value": 10
+    "variableName": "count"
   }
 ];
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "HomeQuery",
+    "name": "PostListPaginationQuery",
     "selections": [
       {
-        "args": null,
+        "args": [
+          {
+            "kind": "Variable",
+            "name": "count",
+            "variableName": "count"
+          },
+          {
+            "kind": "Variable",
+            "name": "cursor",
+            "variableName": "cursor"
+          }
+        ],
         "kind": "FragmentSpread",
-        "name": "Wall_root"
+        "name": "PostList_root"
       }
     ],
     "type": "RootQueryType",
@@ -74,13 +104,13 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "HomeQuery",
+    "name": "PostListPaginationQuery",
     "selections": [
       {
         "alias": "posts",
-        "args": (v0/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "PostConnection",
         "kind": "LinkedField",
         "name": "listPosts",
@@ -169,11 +199,11 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "listPosts(first:10)"
+        "storageKey": null
       },
       {
         "alias": "posts",
-        "args": (v0/*: any*/),
+        "args": (v1/*: any*/),
         "filters": null,
         "handle": "connection",
         "key": "PostList_root_posts",
@@ -183,14 +213,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "0fac2aa74f8f888dc4ae8202949bee76",
+    "cacheID": "2a99216d81ac33a40ee026315389eafb",
     "id": null,
     "metadata": {},
-    "name": "HomeQuery",
+    "name": "PostListPaginationQuery",
     "operationKind": "query",
-    "text": "query HomeQuery {\n  ...Wall_root\n}\n\nfragment PostListItem_post on Post {\n  id\n  content\n  insertedAt\n}\n\nfragment PostList_root on RootQueryType {\n  posts: listPosts(first: 10) {\n    edges {\n      node {\n        id\n        ...PostListItem_post\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment Wall_root on RootQueryType {\n  ...PostList_root\n}\n"
+    "text": "query PostListPaginationQuery(\n  $count: Int = 10\n  $cursor: String\n) {\n  ...PostList_root_1G22uz\n}\n\nfragment PostListItem_post on Post {\n  id\n  content\n  insertedAt\n}\n\nfragment PostList_root_1G22uz on RootQueryType {\n  posts: listPosts(first: $count, after: $cursor) {\n    edges {\n      node {\n        id\n        ...PostListItem_post\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = '3a8089936d3716c0f56a048150ed00ac';
+(node as any).hash = 'e0afbf5dee4f9bbdbcc330570e0a2609';
 export default node;

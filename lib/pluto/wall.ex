@@ -13,7 +13,7 @@ defmodule Pluto.Wall do
   def posts_query(query, args) do
     Enum.reduce(args, query, fn
       {:order, :newest}, query ->
-        query |> order_by(desc: :inserted_at)
+        query |> order_by(desc: :inserted_at, desc: :id)
 
       _, query ->
         query

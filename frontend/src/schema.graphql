@@ -3,6 +3,30 @@ schema {
   query: RootQueryType
 }
 
+type PageInfo {
+  "When paginating backwards, are there more items?"
+  hasPreviousPage: Boolean!
+
+  "When paginating forwards, are there more items?"
+  hasNextPage: Boolean!
+
+  "When paginating backwards, the cursor to continue."
+  startCursor: String
+
+  "When paginating forwards, the cursor to continue."
+  endCursor: String
+}
+
+type PostEdge {
+  node: Post
+  cursor: String
+}
+
+type PostConnection {
+  pageInfo: PageInfo!
+  edges: [PostEdge]
+}
+
 interface Node {
   "The ID of the object."
   id: ID!
@@ -18,7 +42,7 @@ type Post implements Node {
 }
 
 type RootQueryType {
-  listPosts: [Post!]!
+  listPosts(after: String, first: Int, before: String, last: Int): PostConnection
   node(
     "The ID of an object."
     id: ID!

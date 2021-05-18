@@ -21,7 +21,7 @@ defmodule Pluto.WallTest do
     test "with latest query args" do
       query =
         from u in Pluto.Wall.Post,
-          order_by: [desc: :inserted_at]
+          order_by: [desc: :inserted_at, desc: :id]
 
       assert Wall.posts_query(order: :newest) |> inspect() == inspect(query)
     end
