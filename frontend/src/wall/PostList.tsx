@@ -8,7 +8,6 @@ import { useCallback } from 'react'
 
 const Background = styled('div')({
   marginBottom: '0.4rem',
-  padding: '1rem',
 })
 
 const userFragment = graphql`

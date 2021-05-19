@@ -2,13 +2,13 @@ import graphql from 'babel-plugin-relay/macro'
 import { loadQuery, usePreloadedQuery } from 'react-relay'
 import RelayEnvironment from '../relay/RelayEnvironment'
 import Wall from '../wall/Wall'
+import CreatePostBox from '../wall/CreatePostBox'
 import { HomeQuery as HomeQueryType } from './__generated__/HomeQuery.graphql'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles({
   root: {
-    width: '100%',
-    height: '100%',
+    padding: '1rem',
   },
 })
 
@@ -26,6 +26,7 @@ function Home() {
 
   return (
     <div className={classes.root}>
+      <CreatePostBox />
       <Wall root={data} />
     </div>
   )
