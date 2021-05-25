@@ -4,6 +4,9 @@ defmodule PlutoWeb.Schema.Wall do
   use Absinthe.Schema.Notation
   use Absinthe.Relay.Schema.Notation, :modern
 
+  import AbsintheErrorPayload.Payload
+  import_types(AbsintheErrorPayload.ValidationMessageTypes)
+
   alias PlutoWeb.Resolvers.Wall
 
   connection(node_type: :post)
@@ -13,9 +16,24 @@ defmodule PlutoWeb.Schema.Wall do
     field :inserted_at, non_null(:naive_datetime)
   end
 
+  input_object(:create_post_input) do
+    field :content, non_null(:string)
+  end
+
+  payload_object(:post_payload, :post)
+
   object :wall_queries do
     connection field :list_posts, node_type: :post do
       resolve(&Wall.posts/2)
+    end
+  end
+
+  object :wall_mutations do
+    field :create_post, non_null(:post_payload) do
+      arg(:input, non_null(:create_post_input))
+
+      resolve(&Wall.create_post/2)
+      middleware(&build_payload/2)
     end
   end
 end

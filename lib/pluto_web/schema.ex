@@ -28,4 +28,8 @@ defmodule PlutoWeb.Schema do
 
     import_fields(:wall_queries)
   end
+
+  mutation do
+    import_fields(:wall_mutations)
+  end
 end
