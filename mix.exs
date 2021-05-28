@@ -50,7 +50,6 @@ defmodule Pluto.MixProject do
       {:dataloader, "~> 1.0.8"},
       {:absinthe_error_payload, "~> 1.1.3"},
       {:credo, "~> 1.5.5", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:ecto_psql_extras, "~> 0.2"},
       {:cors_plug, "~> 2.0"},
       {:ex_machina, "~> 2.7.0"},

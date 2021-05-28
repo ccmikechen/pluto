@@ -29,5 +29,7 @@ defmodule PlutoWeb.Router do
       pipe_through [:fetch_session, :protect_from_forgery]
       live_dashboard "/dashboard", metrics: PlutoWeb.Telemetry, ecto_repos: [Pluto.Repo]
     end
+
+    forward("/e2e", Pluto.Plug.TestEndToEnd)
   end
 end

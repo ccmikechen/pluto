@@ -1,0 +1,15 @@
+{
+  "plugins": ["cypress", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "eslint-config-prettier"
+  ],
+  "rules": {
+    "prettier/prettier": "error",
+    "no-restricted-modules": "error"
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  }
+}
