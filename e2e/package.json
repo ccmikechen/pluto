@@ -6,7 +6,7 @@
     "backend": "cd .. && env-cmd -f e2e/.env mix do ecto.drop, ecto.create, ecto.migrate, phx.server",
     "frontend": "yarn --cwd ../frontend e2e",
     "start": "concurrently \"yarn backend\" \"yarn frontend\"",
-    "lint": "eslint -c eslint.json cypress/**/*.js --fix"
+    "lint": "eslint -c eslint.json --fix cypress"
   },
   "devDependencies": {
     "cypress": "^7.4.0",
