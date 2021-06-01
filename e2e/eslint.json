@@ -2,7 +2,8 @@
   "plugins": ["cypress", "prettier"],
   "extends": [
     "eslint:recommended",
-    "eslint-config-prettier"
+    "eslint-config-prettier",
+    "plugin:cypress/recommended"
   ],
   "rules": {
     "prettier/prettier": "error",

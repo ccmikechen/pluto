@@ -30,15 +30,24 @@ defmodule Pluto.Plug.TestEndToEnd do
     end
   end
 
-  post "/db/factory" do
+  post "/db/insert_list" do
     with {:ok, schema} <- Map.fetch(conn.body_params, "schema"),
-         {:ok, attrs} <- Map.fetch(conn.body_params, "attributes") do
-      db_schema = String.to_atom(schema)
-      db_attrs = Enum.map(attrs, fn {k, v} -> {String.to_atom(k), v} end)
-      db_entry = Pluto.Factory.insert(db_schema, db_attrs)
-      send_resp(conn, 200, Jason.encode!(%{id: db_entry.id}))
+         number <- Map.get(conn.body_params, "number", 1),
+         attrs <- Map.get(conn.body_params, "attributes", %{}) do
+      schema = String.to_atom(schema)
+      attrs = Enum.map(attrs, fn {k, v} -> {String.to_atom(k), v} end)
+      entries = Pluto.Factory.insert_list(number, schema, attrs)
+
+      response =
+        entries
+        |> Enum.map(fn entry ->
+          entry |> Map.from_struct() |> Map.delete(:__meta__) |> Map.delete(:__struct__)
+        end)
+        |> Jason.encode!()
+
+      send_resp(conn, 200, response)
     else
-      _ -> send_resp(conn, 401, "schema or attributes missing")
+      _ -> send_resp(conn, 400, "schema, number or attributes missing")
     end
   end
 

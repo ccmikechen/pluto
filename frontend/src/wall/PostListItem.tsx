@@ -35,7 +35,7 @@ function PostListItem(props: Props) {
   const post = useFragment(userFragment, props.post)
   const classes = useStyles()
   return (
-    <div key={post.id}>
+    <div key={post.id} data-testid="postCard">
       <Card className={classes.card}>
         <CardContent>
           <Typography variant="h4" color="primary">

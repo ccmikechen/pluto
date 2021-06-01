@@ -1,25 +1,30 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+const API_URL = "http://localhost:4002";
+
+Cypress.Commands.add("checkoutdb", () => {
+  cy.request("POST", `${API_URL}/e2e/db/checkout`).as("checkoutDb");
+});
+
+Cypress.Commands.add("checkindb", () => {
+  cy.request("POST", `${API_URL}/e2e/db/checkin`).as("checkinDb");
+});
+
+Cypress.Commands.add("insert", (schema, attributes) => {
+  cy.log(`Creating a ${schema}`);
+  cy.request("POST", `${API_URL}/e2e/db/insert_list`, {
+    schema,
+    attributes,
+  })
+    .as("insert")
+    .then((r) => r.body[0]);
+});
+
+Cypress.Commands.add("insertList", (schema, number, attributes) => {
+  cy.log(`Creating a ${schema} list`);
+  cy.request("POST", `${API_URL}/e2e/db/insert_list`, {
+    schema,
+    number,
+    attributes,
+  })
+    .as("insertList")
+    .then((r) => r.body);
+});

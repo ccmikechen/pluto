@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "backend": "cd .. && env-cmd -f e2e/.env mix do ecto.drop, ecto.create, ecto.migrate, phx.server",
+    "frontend": "yarn --cwd ../frontend e2e",
+    "start": "concurrently \"yarn backend\" \"yarn frontend\"",
     "lint": "eslint -c eslint.json cypress/**/*.js --fix"
   },
   "devDependencies": {
@@ -16,5 +19,9 @@
   },
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true
+  },
+  "dependencies": {
+    "concurrently": "^6.2.0",
+    "env-cmd": "^10.1.0"
   }
 }
