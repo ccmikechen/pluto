@@ -28,3 +28,7 @@ Cypress.Commands.add('insertList', (schema, number, attributes) => {
     .as('insertList')
     .then((r) => r.body)
 })
+
+Cypress.Commands.add('the', (id) => {
+  cy.get(`[data-testid=${id}`)
+})

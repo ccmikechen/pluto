@@ -26,6 +26,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:e2e": "env-cmd -f .env.e2e yarn start",
     "build": "react-scripts build",
     "build:e2e": "env-cmd -f .env.e2e yarn build",
     "e2e": "yarn build:e2e && yarn serve -s build -l 4001",

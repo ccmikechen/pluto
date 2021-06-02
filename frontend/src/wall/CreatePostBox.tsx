@@ -62,7 +62,7 @@ function CreatePostBox() {
 
   return (
     <BoxContainer display="flex" flexDirection="column">
-      <Box flex={1} display="flex">
+      <Box flex={1} display="flex" data-testid="createPostBox">
         <StyledTextArea
           multiline={true}
           rows={5}
@@ -74,7 +74,7 @@ function CreatePostBox() {
         />
       </Box>
       <Box display="flex" flexDirection="row-reverse">
-        <Button onClick={handleSubmit} disabled={isProcessing}>
+        <Button data-testid="submitPostButton" onClick={handleSubmit} disabled={isProcessing}>
           Submit
         </Button>
       </Box>

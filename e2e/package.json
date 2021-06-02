@@ -18,7 +18,8 @@
     "prettier": "^2.3.0"
   },
   "cypress-cucumber-preprocessor": {
-    "nonGlobalStepDefinitions": true
+    "nonGlobalStepDefinitions": true,
+    "commonPath": "cypress/integration/common/"
   },
   "dependencies": {
     "concurrently": "^6.2.0",
