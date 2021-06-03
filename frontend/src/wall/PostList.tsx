@@ -5,6 +5,7 @@ import { PostList_root$key } from './__generated__/PostList_root.graphql'
 import { styled } from '@material-ui/core/styles'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useCallback } from 'react'
+import { useHistory } from 'react-router-dom'
 
 const Background = styled('div')({
   marginBottom: '0.4rem',
@@ -34,6 +35,14 @@ type Props = {
 
 function PostList(props: Props) {
   const { data, loadNext, hasNext } = usePaginationFragment(userFragment, props.root)
+  const history = useHistory()
+
+  const handlePostClick = useCallback(
+    (id: string) => {
+      history.push(`/post/${id}`)
+    },
+    [history]
+  )
 
   const handleLoadNext = useCallback(() => {
     loadNext(5)
@@ -48,7 +57,10 @@ function PostList(props: Props) {
         loader={<h4>Loading...</h4>}
       >
         {data.posts?.edges?.map(
-          (edge) => edge?.node && <PostListItem key={edge.node.id} post={edge.node} />
+          (edge) =>
+            edge?.node && (
+              <PostListItem key={edge.node.id} post={edge.node} onPostClick={handlePostClick} />
+            )
         )}
       </InfiniteScroll>
     </Background>
