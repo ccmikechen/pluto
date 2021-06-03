@@ -10,4 +10,9 @@ defmodule PlutoWeb.Resolvers.Wall do
   def create_post(%{input: input}, _) do
     Wall.create_post(input)
   end
+
+  def post(%{id: id}, _) do
+    result = Wall.get_post(id)
+    {:ok, result}
+  end
 end

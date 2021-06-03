@@ -40,4 +40,12 @@ defmodule Pluto.WallTest do
       assert {:error, %Ecto.Changeset{}} = Wall.create_post(%{content: content})
     end
   end
+
+  describe "get_post/1" do
+    test "get post by specific id" do
+      %{id: id} = insert(:post)
+
+      assert %Wall.Post{id: ^id} = Wall.get_post(id)
+    end
+  end
 end

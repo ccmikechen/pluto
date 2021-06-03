@@ -3,6 +3,8 @@ defmodule PlutoWeb.Schema.WallTest do
 
   import Pluto.Factory
 
+  alias Absinthe.Relay.Node
+
   describe "listPosts query" do
     @query """
     {
@@ -64,6 +66,37 @@ defmodule PlutoWeb.Schema.WallTest do
 
       assert json_response(conn, 200) == %{
                "data" => %{"createPost" => %{"result" => %{"content" => "write something"}}}
+             }
+    end
+  end
+
+  describe "getPost query" do
+    @query """
+    query($id: ID!) {
+      post(id: $id) {
+        content
+        insertedAt
+      }
+    }
+    """
+
+    test "return post by given id", %{conn: conn} do
+      %{id: id, content: content, inserted_at: inserted_at} = insert(:post)
+      node_id = Node.to_global_id("Post", id)
+
+      conn =
+        post(conn, "/api", %{
+          "query" => @query,
+          "variables" => %{id: node_id}
+        })
+
+      expected_post = %{
+        "content" => content,
+        "insertedAt" => NaiveDateTime.to_iso8601(inserted_at)
+      }
+
+      assert json_response(conn, 200) == %{
+               "data" => %{"post" => expected_post}
              }
     end
   end

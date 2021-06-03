@@ -25,4 +25,8 @@ defmodule Pluto.Wall do
     |> Post.changeset(attrs)
     |> Repo.insert()
   end
+
+  def get_post(id) do
+    Repo.get(Post, id)
+  end
 end

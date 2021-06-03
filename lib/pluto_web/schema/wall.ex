@@ -7,6 +7,7 @@ defmodule PlutoWeb.Schema.Wall do
   import AbsintheErrorPayload.Payload
   import_types(AbsintheErrorPayload.ValidationMessageTypes)
 
+  alias Absinthe.Relay.Node.ParseIDs
   alias PlutoWeb.Resolvers.Wall
 
   connection(node_type: :post)
@@ -25,6 +26,13 @@ defmodule PlutoWeb.Schema.Wall do
   object :wall_queries do
     connection field :list_posts, node_type: :post do
       resolve(&Wall.posts/2)
+    end
+
+    field :post, :post do
+      arg(:id, non_null(:id))
+
+      middleware(ParseIDs, id: :post)
+      resolve(&Wall.post/2)
     end
   end
 
