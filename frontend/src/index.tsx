@@ -17,6 +17,12 @@ const theme = createMuiTheme({
       primary: '#D0D0DE',
     },
   },
+  typography: {
+    body1: {
+      fontSize: '2rem',
+      textAlign: 'justify'
+    }
+  }
 })
 
 ReactDOM.render(

@@ -60,6 +60,7 @@ type RootMutationType {
 
 type RootQueryType {
   listPosts(after: String, first: Int, before: String, last: Int): PostConnection
+  post(id: ID!): Post
   node(
     "The ID of an object."
     id: ID!
