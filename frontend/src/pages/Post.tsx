@@ -1,7 +1,6 @@
 import graphql from 'babel-plugin-relay/macro'
-import { loadQuery, usePreloadedQuery } from 'react-relay'
+import { useLazyLoadQuery } from 'react-relay'
 import { useParams } from 'react-router-dom'
-import RelayEnvironment from '../relay/RelayEnvironment'
 import { PostQuery as PostQueryType } from './__generated__/PostQuery.graphql'
 import PostContent from '../wall/PostContent'
 import { makeStyles, Typography } from '@material-ui/core'
@@ -24,12 +23,10 @@ interface ParamTypes {
   id: string
 }
 
-const preloadedQuery = (id: string) => loadQuery<PostQueryType>(RelayEnvironment, PostQuery, { id })
-
 function Post() {
   const classes = useStyles()
   const { id } = useParams<ParamTypes>()
-  const data = usePreloadedQuery(PostQuery, preloadedQuery(id))
+  const data = useLazyLoadQuery<PostQueryType>(PostQuery, { id })
 
   if (!data.post) {
     return (

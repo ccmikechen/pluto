@@ -32,7 +32,7 @@ function PostContent(props: Props) {
   const post = useFragment(query, props.post)
 
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} data-testid="postContent">
       <CardContent>
         <Typography variant="body1" color="primary">
           {post.content}

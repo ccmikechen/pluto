@@ -51,6 +51,19 @@ defmodule Pluto.Plug.TestEndToEnd do
     end
   end
 
+  post "/eval" do
+    try do
+      code = Map.get(conn.body_params, "code", "")
+      {result, _} = Code.eval_string(code)
+      response = Jason.encode!(%{result: result})
+
+      send_resp(conn, 200, response)
+    rescue
+      _ ->
+        send_resp(conn, 400, "invalid command")
+    end
+  end
+
   defp checkout_shared_db_conn do
     :ok = SQL.Sandbox.checkout(Repo, ownership_timeout: :infinity)
     :ok = SQL.Sandbox.mode(Repo, {:shared, self()})

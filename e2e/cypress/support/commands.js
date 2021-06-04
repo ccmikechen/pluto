@@ -29,6 +29,16 @@ Cypress.Commands.add('insertList', (schema, number, attributes) => {
     .then((r) => r.body)
 })
 
+Cypress.Commands.add('exec', (code) => {
+  cy.request('POST', `${API_URL}/e2e/eval`, { code })
+    .as('exec')
+    .then((r) => r.body.result)
+})
+
+Cypress.Commands.add('toGlobalId', (schema, id) => {
+  cy.exec(`Absinthe.Relay.Node.to_global_id("${schema}", ${id})`)
+})
+
 Cypress.Commands.add('the', (id) => {
   cy.get(`[data-testid=${id}`)
 })

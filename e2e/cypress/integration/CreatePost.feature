@@ -1,4 +1,5 @@
 Feature: Create post
+
   Scenario Outline: Creating a post
     Given I am on the home page
     When I write post content of "<content>"
