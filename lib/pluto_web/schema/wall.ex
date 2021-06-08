@@ -6,6 +6,7 @@ defmodule PlutoWeb.Schema.Wall do
 
   import AbsintheErrorPayload.Payload
   import_types(AbsintheErrorPayload.ValidationMessageTypes)
+  import_types(PlutoWeb.Schema.Replies)
 
   alias Absinthe.Relay.Node.ParseIDs
   alias PlutoWeb.Resolvers.Wall
@@ -15,6 +16,8 @@ defmodule PlutoWeb.Schema.Wall do
   node object(:post) do
     field :content, non_null(:string)
     field :inserted_at, non_null(:naive_datetime)
+
+    import_fields(:comment_query)
   end
 
   input_object(:create_post_input) do
