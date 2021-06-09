@@ -34,14 +34,16 @@ function PostCommentContent(props: Props) {
   const { content, insertedAt } = useFragment(userFragment, props.comment)
 
   return (
-    <StyledCard>
-      <CardContent>
-        <Content variant="body1" color="primary">
-          {content}
-        </Content>
-        <Timestamp variant="subtitle2">{getTimeAgo(new Date(insertedAt))}</Timestamp>
-      </CardContent>
-    </StyledCard>
+    <div>
+      <StyledCard>
+        <CardContent>
+          <Content variant="body1" color="primary" data-testid="postCommentContent">
+            {content}
+          </Content>
+          <Timestamp variant="subtitle2">{getTimeAgo(new Date(insertedAt))}</Timestamp>
+        </CardContent>
+      </StyledCard>
+    </div>
   )
 }
 

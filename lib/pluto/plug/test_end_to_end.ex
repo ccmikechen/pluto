@@ -40,9 +40,7 @@ defmodule Pluto.Plug.TestEndToEnd do
 
       response =
         entries
-        |> Enum.map(fn entry ->
-          entry |> Map.from_struct() |> Map.delete(:__meta__) |> Map.delete(:__struct__)
-        end)
+        |> Enum.map(&convert_record/1)
         |> Jason.encode!()
 
       send_resp(conn, 200, response)
@@ -71,5 +69,17 @@ defmodule Pluto.Plug.TestEndToEnd do
 
   defp checkin_shared_db_conn(_) do
     :ok = SQL.Sandbox.checkin(Repo)
+  end
+
+  defp convert_record(record) do
+    record
+    |> Map.from_struct()
+    |> Map.delete(:__meta__)
+    |> Map.delete(:__struct__)
+    |> Enum.filter(fn
+      {_, %Ecto.Association.NotLoaded{}} -> false
+      _ -> true
+    end)
+    |> Enum.into(%{})
   end
 end
