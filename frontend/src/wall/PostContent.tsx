@@ -1,6 +1,5 @@
 import graphql from 'babel-plugin-relay/macro'
-import { Card, CardContent, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Card, CardContent, Typography, styled } from '@material-ui/core'
 import { getTimeAgo } from '../app/time'
 import { useFragment } from 'react-relay'
 import { PostContent_post$key } from './__generated__/PostContent_post.graphql'
@@ -12,15 +11,14 @@ const query = graphql`
   }
 `
 
-const useStyles = makeStyles({
-  card: {
-    background: '#40516E',
-    marginBottom: '0.8rem',
-    contentVisibility: 'auto',
-  },
-  timestamp: {
-    color: '#AAAAAA',
-  },
+const StyledCard = styled(Card)({
+  background: '#40516E',
+  marginBottom: '0.8rem',
+  contentVisibility: 'auto',
+})
+
+const Timestamp = styled(Typography)({
+  color: '#AAAAAA',
 })
 
 type Props = {
@@ -28,20 +26,17 @@ type Props = {
 }
 
 function PostContent(props: Props) {
-  const classes = useStyles()
-  const post = useFragment(query, props.post)
+  const { content, insertedAt } = useFragment(query, props.post)
 
   return (
-    <Card className={classes.card} data-testid="postContent">
+    <StyledCard data-testid="postContent">
       <CardContent>
         <Typography variant="body1" color="primary">
-          {post.content}
+          {content}
         </Typography>
-        <Typography variant="subtitle2" className={classes.timestamp}>
-          {getTimeAgo(new Date('2020-10-10T00:00:00'))}
-        </Typography>
+        <Timestamp variant="subtitle2">{getTimeAgo(new Date(insertedAt))}</Timestamp>
       </CardContent>
-    </Card>
+    </StyledCard>
   )
 }
 export default PostContent

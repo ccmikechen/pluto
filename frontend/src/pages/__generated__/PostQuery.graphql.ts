@@ -9,7 +9,7 @@ export type PostQueryVariables = {
 };
 export type PostQueryResponse = {
     readonly post: {
-        readonly " $fragmentRefs": FragmentRefs<"PostContent_post">;
+        readonly " $fragmentRefs": FragmentRefs<"PostContent_post" | "PostComments_post">;
     } | null;
 };
 export type PostQuery = {
@@ -25,7 +25,20 @@ query PostQuery(
 ) {
   post(id: $id) {
     ...PostContent_post
+    ...PostComments_post
     id
+  }
+}
+
+fragment PostCommentContent_comment on Post {
+  content
+  insertedAt
+}
+
+fragment PostComments_post on Post {
+  comments {
+    id
+    ...PostCommentContent_comment
   }
 }
 
@@ -49,7 +62,28 @@ v1 = [
     "name": "id",
     "variableName": "id"
   }
-];
+],
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "content",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "insertedAt",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -69,6 +103,11 @@ return {
             "args": null,
             "kind": "FragmentSpread",
             "name": "PostContent_post"
+          },
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "PostComments_post"
           }
         ],
         "storageKey": null
@@ -91,41 +130,37 @@ return {
         "name": "post",
         "plural": false,
         "selections": [
+          (v2/*: any*/),
+          (v3/*: any*/),
           {
             "alias": null,
             "args": null,
-            "kind": "ScalarField",
-            "name": "content",
+            "concreteType": "Post",
+            "kind": "LinkedField",
+            "name": "comments",
+            "plural": true,
+            "selections": [
+              (v4/*: any*/),
+              (v2/*: any*/),
+              (v3/*: any*/)
+            ],
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "insertedAt",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "id",
-            "storageKey": null
-          }
+          (v4/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "f2465465fbffed982a82eab3dc0207f3",
+    "cacheID": "bffcf3bdbab89f6b802d7e5da97fc9f5",
     "id": null,
     "metadata": {},
     "name": "PostQuery",
     "operationKind": "query",
-    "text": "query PostQuery(\n  $id: ID!\n) {\n  post(id: $id) {\n    ...PostContent_post\n    id\n  }\n}\n\nfragment PostContent_post on Post {\n  content\n  insertedAt\n}\n"
+    "text": "query PostQuery(\n  $id: ID!\n) {\n  post(id: $id) {\n    ...PostContent_post\n    ...PostComments_post\n    id\n  }\n}\n\nfragment PostCommentContent_comment on Post {\n  content\n  insertedAt\n}\n\nfragment PostComments_post on Post {\n  comments {\n    id\n    ...PostCommentContent_comment\n  }\n}\n\nfragment PostContent_post on Post {\n  content\n  insertedAt\n}\n"
   }
 };
 })();
-(node as any).hash = 'a0c5eae322fdbf5a99a322bba51058cb';
+(node as any).hash = 'c4eca9318cff66e1e74cb4b3f50285a8';
 export default node;

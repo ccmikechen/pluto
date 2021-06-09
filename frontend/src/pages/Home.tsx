@@ -4,13 +4,7 @@ import RelayEnvironment from '../relay/RelayEnvironment'
 import Wall from '../wall/Wall'
 import CreatePostBox from '../wall/CreatePostBox'
 import { HomeQuery as HomeQueryType } from './__generated__/HomeQuery.graphql'
-import { makeStyles } from '@material-ui/core/styles'
-
-const useStyles = makeStyles({
-  root: {
-    padding: '1rem',
-  },
-})
+import { styled } from '@material-ui/core'
 
 const HomeQuery = graphql`
   query HomeQuery {
@@ -18,17 +12,20 @@ const HomeQuery = graphql`
   }
 `
 
+const Root = styled('div')({
+  padding: '1rem',
+})
+
 const preloadedQuery = loadQuery<HomeQueryType>(RelayEnvironment, HomeQuery, {})
 
 function Home() {
-  const classes = useStyles()
   const data = usePreloadedQuery(HomeQuery, preloadedQuery)
 
   return (
-    <div className={classes.root}>
+    <Root>
       <CreatePostBox />
       <Wall root={data} />
-    </div>
+    </Root>
   )
 }
 

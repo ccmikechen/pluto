@@ -46,6 +46,8 @@ input CreatePostInput {
 }
 
 type Post implements Node {
+  comments: [Post!]!
+
   "The ID of an object"
   id: ID!
 

@@ -3,20 +3,24 @@ import { useLazyLoadQuery } from 'react-relay'
 import { useParams } from 'react-router-dom'
 import { PostQuery as PostQueryType } from './__generated__/PostQuery.graphql'
 import PostContent from '../wall/PostContent'
-import { makeStyles, Typography } from '@material-ui/core'
+import { styled, Typography } from '@material-ui/core'
+import PostComments from '../replies/PostComments'
 
 const PostQuery = graphql`
   query PostQuery($id: ID!) {
     post(id: $id) {
       ...PostContent_post
+      ...PostComments_post
     }
   }
 `
 
-const useStyles = makeStyles({
-  root: {
-    padding: '1rem',
-  },
+const Root = styled('div')({
+  padding: '1rem',
+})
+
+const CommentsContainer = styled('div')({
+  margin: '2rem 0 0 1rem',
 })
 
 interface ParamTypes {
@@ -24,7 +28,6 @@ interface ParamTypes {
 }
 
 function Post() {
-  const classes = useStyles()
   const { id } = useParams<ParamTypes>()
   const data = useLazyLoadQuery<PostQueryType>(PostQuery, { id })
 
@@ -39,9 +42,12 @@ function Post() {
   }
 
   return (
-    <div className={classes.root}>
+    <Root>
       <PostContent post={data.post} />
-    </div>
+      <CommentsContainer>
+        <PostComments post={data.post} />
+      </CommentsContainer>
+    </Root>
   )
 }
 
