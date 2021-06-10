@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react'
 import graphql from 'babel-plugin-relay/macro'
 import { useLazyLoadQuery } from 'react-relay'
 import { useParams } from 'react-router-dom'
@@ -38,6 +39,19 @@ function Post() {
   const { id } = useParams<ParamTypes>()
   const data = useLazyLoadQuery<PostQueryType>(PostQuery, { id })
 
+  const [comment, setComment] = useState<string>('')
+
+  const handleCommentChange = useCallback(
+    (text: string) => {
+      setComment(text)
+    },
+    [setComment]
+  )
+
+  const handleSubmitComment = useCallback(() => {
+    alert(comment)
+  }, [comment])
+
   if (!data.post) {
     return (
       <div>
@@ -57,7 +71,11 @@ function Post() {
         </CommentsContainer>
       </PostCommentsContainer>
       <ReplyContainer>
-        <CreateCommentBox />
+        <CreateCommentBox
+          value={comment}
+          onContentChange={handleCommentChange}
+          onSubmit={handleSubmitComment}
+        />
       </ReplyContainer>
     </Box>
   )

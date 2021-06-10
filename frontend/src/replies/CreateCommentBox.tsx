@@ -1,5 +1,7 @@
 import { styled } from '@material-ui/core/styles'
-import { Box, TextField } from '@material-ui/core'
+import { useCallback, useState } from 'react'
+import { Box, IconButton, TextField } from '@material-ui/core'
+import ReplyIcon from '@material-ui/icons/Reply'
 
 const BoxContainer = styled(Box)({
   backgroundColor: 'rgba(193,200,212, 0.1)',
@@ -8,17 +10,74 @@ const BoxContainer = styled(Box)({
   marginLeft: '1rem',
 })
 
+const StyledReplyIcon = styled(ReplyIcon)({
+  color: '#AAAAAA',
+})
+
 const StyledTextArea = styled(TextField)({ flex: 1, height: '100%' })
 
-function CreateCommentBox() {
+type Props = {
+  value?: string
+  onContentChange?: (text: string) => void
+  onSubmit?: () => void
+}
+
+function CreateCommentBox(props: Props) {
+  const {
+    value = '',
+    onContentChange = () => {
+      return
+    },
+    onSubmit = () => {
+      return
+    },
+  } = props
+
+  const [content, setContent] = useState<string>(value)
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setContent(e.target.value)
+      onContentChange(e.target.value)
+    },
+    [onContentChange]
+  )
+
+  const handleSubmit = useCallback(() => {
+    if (content === '') {
+      return
+    }
+
+    onSubmit()
+    setContent('')
+    onContentChange('')
+  }, [onSubmit, content, setContent, onContentChange])
+
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (e.keyCode === 13) {
+        handleSubmit()
+      }
+    },
+    [handleSubmit]
+  )
+
   return (
-    <BoxContainer display="flex" flexDirection="column">
+    <BoxContainer display="flex">
       <Box flex={1} display="flex">
         <StyledTextArea
+          value={content}
           placeholder="Comment something"
           InputProps={{ disableUnderline: true, style: { flex: 1, fontSize: '1.3rem' } }}
           inputProps={{ maxLength: 500 }}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
         />
+      </Box>
+      <Box>
+        <IconButton onClick={handleSubmit}>
+          <StyledReplyIcon />
+        </IconButton>
       </Box>
     </BoxContainer>
   )
