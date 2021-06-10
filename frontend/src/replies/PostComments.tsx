@@ -1,12 +1,15 @@
-import graphql from 'babel-plugin-relay/macro'
-import { useFragment } from 'react-relay'
-import { PostComments_post$key } from './__generated__/PostComments_post.graphql'
 import PostCommentContent from './PostCommentContent'
+import graphql from 'babel-plugin-relay/macro'
+import { useMemo } from 'react'
+import { useFragment } from 'react-relay'
+import { sortBy } from 'lodash'
+import { PostComments_post$key } from './__generated__/PostComments_post.graphql'
 
 const userFragment = graphql`
   fragment PostComments_post on Post {
     comments {
       id
+      insertedAt
       ...PostCommentContent_comment
     }
   }
@@ -18,9 +21,11 @@ type Props = {
 
 function PostComments(props: Props) {
   const post = useFragment(userFragment, props.post)
+  const sortedComments = useMemo(() => sortBy(post.comments, ['insertedAt', 'id']), [post.comments])
+
   return (
     <div>
-      {post.comments.map((comment) => (
+      {sortedComments.map((comment) => (
         <PostCommentContent key={comment.id} comment={comment} />
       ))}
     </div>
