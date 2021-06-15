@@ -34,4 +34,33 @@ defmodule PlutoWeb.Schema.RepliesTest do
              } = json_response(conn, 200)
     end
   end
+
+  describe "createComment mutation" do
+    @query """
+    mutation($input: CreateCommentInput!) {
+      createComment(input: $input){
+        result {
+          content
+        }
+      }
+    }
+    """
+
+    test "create comment successfully", %{conn: conn} do
+      %{id: id} = insert(:post)
+
+      node_id = Node.to_global_id("Post", id)
+      input = %{input: %{content: "write something", reply_id: node_id}}
+
+      conn =
+        post(conn, "/api", %{
+          "query" => @query,
+          "variables" => input
+        })
+
+      assert json_response(conn, 200) == %{
+               "data" => %{"createComment" => %{"result" => %{"content" => "write something"}}}
+             }
+    end
+  end
 end

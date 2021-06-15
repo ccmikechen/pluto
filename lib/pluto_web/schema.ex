@@ -5,6 +5,7 @@ defmodule PlutoWeb.Schema do
   use Absinthe.Relay.Schema, :modern
 
   import_types(__MODULE__.Wall)
+  import_types(__MODULE__.Replies)
   import_types(Absinthe.Type.Custom)
 
   node interface do
@@ -31,5 +32,6 @@ defmodule PlutoWeb.Schema do
 
   mutation do
     import_fields(:wall_mutations)
+    import_fields(:replies_mutations)
   end
 end

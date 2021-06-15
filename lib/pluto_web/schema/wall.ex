@@ -6,7 +6,6 @@ defmodule PlutoWeb.Schema.Wall do
 
   import AbsintheErrorPayload.Payload
   import_types(AbsintheErrorPayload.ValidationMessageTypes)
-  import_types(PlutoWeb.Schema.Replies)
 
   alias Absinthe.Relay.Node.ParseIDs
   alias PlutoWeb.Resolvers.Wall

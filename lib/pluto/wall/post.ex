@@ -18,8 +18,9 @@ defmodule Pluto.Wall.Post do
 
   def changeset(post, attrs) do
     post
-    |> cast(attrs, [:content])
+    |> cast(attrs, [:content, :reply_id])
     |> validate_required([:content])
     |> validate_length(:content, max: 500)
+    |> foreign_key_constraint(:reply_id)
   end
 end
