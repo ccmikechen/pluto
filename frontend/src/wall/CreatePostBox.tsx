@@ -30,6 +30,7 @@ const createPostMutation = graphql`
 function CreatePostBox() {
   const [content, setContent] = useState<string>('')
   const [commit, isProcessing] = useMutation<CreatePostBoxMutation>(createPostMutation)
+
   const handleSubmit = useCallback(() => {
     commit({
       variables: {

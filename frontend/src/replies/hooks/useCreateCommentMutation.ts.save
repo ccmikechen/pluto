@@ -1,0 +1,22 @@
+
+
+
+
+OOOOimport graphql COBOqdsbafrom 'babel-plugin-relay/macro'
+impoOOrt {OODOOOOOO useMutation } from 'react-relay'
+importOOOO { useCreateCommentMutation } from './__generated__/useCreateCommentMutation.graphql'
+
+const mutation = graphql`
+  mutation useCreateCommentMutation($input: CreateCommentInput!) {
+    createComment(input: $input) {
+      result {
+        content
+        insertedAt
+      }
+    }
+  }
+`
+
+export default function useCreateCommentMutation() {
+  return useMutation<useCreateCommentMutation>(mutation)
+}

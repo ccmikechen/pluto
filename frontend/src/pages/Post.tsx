@@ -7,6 +7,7 @@ import PostContent from '../wall/PostContent'
 import { styled, Typography, Box } from '@material-ui/core'
 import PostComments from '../replies/PostComments'
 import CreateCommentBox from '../replies/CreateCommentBox'
+import useCreateCommentMutation from '../replies/hooks/useCreateCommentMutation'
 
 const PostQuery = graphql`
   query PostQuery($id: ID!) {
@@ -38,6 +39,7 @@ interface ParamTypes {
 function Post() {
   const { id } = useParams<ParamTypes>()
   const data = useLazyLoadQuery<PostQueryType>(PostQuery, { id })
+  const [commitCreateComment] = useCreateCommentMutation()
 
   const [comment, setComment] = useState<string>('')
 
@@ -49,8 +51,15 @@ function Post() {
   )
 
   const handleSubmitComment = useCallback(() => {
-    alert(comment)
-  }, [comment])
+    commitCreateComment({
+      variables: {
+        input: {
+          replyId: id,
+          content: comment,
+        },
+      },
+    })
+  }, [comment, commitCreateComment, id])
 
   if (!data.post) {
     return (

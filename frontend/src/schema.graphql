@@ -56,8 +56,14 @@ type Post implements Node {
   insertedAt: NaiveDateTime!
 }
 
+input CreateCommentInput {
+  content: String!
+  replyId: ID!
+}
+
 type RootMutationType {
   createPost(input: CreatePostInput!): PostPayload!
+  createComment(input: CreateCommentInput!): PostPayload!
 }
 
 type RootQueryType {
