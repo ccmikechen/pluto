@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useRef } from 'react'
 import graphql from 'babel-plugin-relay/macro'
 import { useLazyLoadQuery } from 'react-relay'
 import { useParams } from 'react-router-dom'
@@ -8,6 +8,7 @@ import { styled, Typography, Box } from '@material-ui/core'
 import PostComments from '../replies/PostComments'
 import CreateCommentBox from '../replies/CreateCommentBox'
 import useCreateCommentMutation from '../replies/hooks/useCreateCommentMutation'
+import { RecordSourceSelectorProxy } from 'relay-runtime'
 
 const PostQuery = graphql`
   query PostQuery($id: ID!) {
@@ -42,6 +43,7 @@ function Post() {
   const [commitCreateComment] = useCreateCommentMutation()
 
   const [comment, setComment] = useState<string>('')
+  const scrollRef = useRef<HTMLDivElement | null>(null)
 
   const handleCommentChange = useCallback(
     (text: string) => {
@@ -57,6 +59,21 @@ function Post() {
           replyId: id,
           content: comment,
         },
+      },
+      updater: (store: RecordSourceSelectorProxy) => {
+        const postRecord = store.get(id)
+        const payload = store.getRootField('createComment')
+        const newCommentRecord = payload?.getLinkedRecord('result')
+
+        if (!newCommentRecord) {
+          return
+        }
+
+        const commentRecords = postRecord?.getLinkedRecords('comments') || []
+        postRecord?.setLinkedRecords([...commentRecords, newCommentRecord], 'comments')
+      },
+      onCompleted: () => {
+        scrollRef.current?.scrollIntoView(false)
       },
     })
   }, [comment, commitCreateComment, id])
@@ -75,7 +92,7 @@ function Post() {
     <Box display="flex" flexDirection="column" className="fullscreen">
       <PostCommentsContainer flex={1}>
         <PostContent post={data.post} />
-        <CommentsContainer>
+        <CommentsContainer ref={scrollRef}>
           <PostComments post={data.post} />
         </CommentsContainer>
       </PostCommentsContainer>

@@ -18,7 +18,6 @@ type Props = {
 const StyledCard = styled(Card)({
   background: '#6A7484',
   marginBottom: '0.8rem',
-  contentVisibility: 'auto',
 })
 
 const Content = styled(Typography)({
