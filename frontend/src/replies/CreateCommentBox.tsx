@@ -64,7 +64,7 @@ function CreateCommentBox(props: Props) {
 
   return (
     <BoxContainer display="flex">
-      <Box flex={1} display="flex">
+      <Box flex={1} display="flex" data-testid="createCommentBox">
         <StyledTextArea
           value={content}
           placeholder="Comment something"
@@ -75,7 +75,7 @@ function CreateCommentBox(props: Props) {
         />
       </Box>
       <Box>
-        <IconButton onClick={handleSubmit}>
+        <IconButton onClick={handleSubmit} data-testid="submitCommentButton">
           <StyledReplyIcon />
         </IconButton>
       </Box>
