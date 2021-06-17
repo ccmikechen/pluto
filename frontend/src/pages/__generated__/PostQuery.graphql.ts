@@ -31,6 +31,7 @@ query PostQuery(
 }
 
 fragment PostCommentContent_comment on Post {
+  id
   content
   insertedAt
 }
@@ -154,12 +155,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "4055d347c3765bb260eaf5aa6fa8bc33",
+    "cacheID": "7ad7e3c1d24e3a23e78b997352f0fc21",
     "id": null,
     "metadata": {},
     "name": "PostQuery",
     "operationKind": "query",
-    "text": "query PostQuery(\n  $id: ID!\n) {\n  post(id: $id) {\n    ...PostContent_post\n    ...PostComments_post\n    id\n  }\n}\n\nfragment PostCommentContent_comment on Post {\n  content\n  insertedAt\n}\n\nfragment PostComments_post on Post {\n  comments {\n    id\n    insertedAt\n    ...PostCommentContent_comment\n  }\n}\n\nfragment PostContent_post on Post {\n  content\n  insertedAt\n}\n"
+    "text": "query PostQuery(\n  $id: ID!\n) {\n  post(id: $id) {\n    ...PostContent_post\n    ...PostComments_post\n    id\n  }\n}\n\nfragment PostCommentContent_comment on Post {\n  id\n  content\n  insertedAt\n}\n\nfragment PostComments_post on Post {\n  comments {\n    id\n    insertedAt\n    ...PostCommentContent_comment\n  }\n}\n\nfragment PostContent_post on Post {\n  content\n  insertedAt\n}\n"
   }
 };
 })();
