@@ -1,5 +1,6 @@
 defmodule PlutoWeb.UserSocket do
   use Phoenix.Socket
+
   use Absinthe.Phoenix.Socket,
     schema: PlutoWeb.Schema
 

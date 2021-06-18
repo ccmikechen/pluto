@@ -34,4 +34,8 @@ defmodule PlutoWeb.Schema do
     import_fields(:wall_mutations)
     import_fields(:replies_mutations)
   end
+
+  subscription do
+    import_fields(:replies_subscription)
+  end
 end

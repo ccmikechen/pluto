@@ -4,6 +4,7 @@ defmodule PlutoWeb.Schema.Replies do
   use Absinthe.Schema.Notation
 
   import AbsintheErrorPayload.Payload
+  import Absinthe.Relay.Node, only: [to_global_id: 2]
 
   alias Absinthe.Relay.Node.ParseIDs
   alias PlutoWeb.Resolvers.Replies
@@ -26,6 +27,26 @@ defmodule PlutoWeb.Schema.Replies do
       middleware(ParseIDs, input: [reply_id: :post])
       resolve(&Replies.create_comment/2)
       middleware(&build_payload/2)
+    end
+  end
+
+  object :replies_subscription do
+    field :new_comment, non_null(:post) do
+      arg(:post_id, non_null(:id))
+
+      config(fn %{post_id: post_id}, _ ->
+        {:ok, topic: post_id}
+      end)
+
+      trigger(:create_comment,
+        topic: fn %{result: %{reply_id: reply_id}} ->
+          to_global_id("Post", reply_id)
+        end
+      )
+
+      resolve(fn %{result: comment}, _, _ ->
+        {:ok, comment}
+      end)
     end
   end
 end

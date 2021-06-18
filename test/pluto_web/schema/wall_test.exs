@@ -1,9 +1,7 @@
 defmodule PlutoWeb.Schema.WallTest do
-  use PlutoWeb.ConnCase
+  use PlutoWeb.SchemaCase
 
   import Pluto.Factory
-
-  alias Absinthe.Relay.Node
 
   describe "listPosts query" do
     @query """
@@ -82,7 +80,7 @@ defmodule PlutoWeb.Schema.WallTest do
 
     test "return post by given id", %{conn: conn} do
       %{id: id, content: content, inserted_at: inserted_at} = insert(:post)
-      node_id = Node.to_global_id("Post", id)
+      node_id = to_global_id("Post", id)
 
       conn =
         post(conn, "/api", %{
