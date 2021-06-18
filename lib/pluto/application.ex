@@ -14,9 +14,10 @@ defmodule Pluto.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Pluto.PubSub},
       # Start the Endpoint (http/https)
-      PlutoWeb.Endpoint
+      PlutoWeb.Endpoint,
       # Start a worker by calling: Pluto.Worker.start_link(arg)
       # {Pluto.Worker, arg}
+      {Absinthe.Subscription, PlutoWeb.Endpoint}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
