@@ -1,6 +1,6 @@
-import { useCallback, useState, useRef } from 'react'
+import { useCallback, useState, useRef, useMemo } from 'react'
 import graphql from 'babel-plugin-relay/macro'
-import { useLazyLoadQuery } from 'react-relay'
+import { useLazyLoadQuery, useSubscription } from 'react-relay'
 import { useParams } from 'react-router-dom'
 import { PostQuery as PostQueryType } from './__generated__/PostQuery.graphql'
 import PostContent from '../wall/PostContent'
@@ -9,12 +9,22 @@ import PostComments from '../replies/PostComments'
 import CreateCommentBox from '../replies/CreateCommentBox'
 import useCreateCommentMutation from '../replies/hooks/useCreateCommentMutation'
 import { RecordSourceSelectorProxy } from 'relay-runtime'
+import { PostSubscription as PostSubscriptionType } from './__generated__/PostSubscription.graphql'
 
 const PostQuery = graphql`
   query PostQuery($id: ID!) {
     post(id: $id) {
       ...PostContent_post
       ...PostComments_post
+    }
+  }
+`
+
+const PostSubscription = graphql`
+  subscription PostSubscription($postId: ID!) {
+    newComment(postId: $postId) {
+      content
+      insertedAt
     }
   }
 `
@@ -41,9 +51,28 @@ function Post() {
   const { id } = useParams<ParamTypes>()
   const data = useLazyLoadQuery<PostQueryType>(PostQuery, { id })
   const [commitCreateComment] = useCreateCommentMutation()
-
   const [comment, setComment] = useState<string>('')
   const scrollRef = useRef<HTMLDivElement | null>(null)
+  const config = useMemo(
+    () => ({
+      variables: { postId: id },
+      subscription: PostSubscription,
+      updater: (store: RecordSourceSelectorProxy) => {
+        const postRecord = store.get(id)
+        const newCommentRecord = store.getRootField('newComment')
+
+        if (!newCommentRecord) {
+          return
+        }
+
+        const commentRecords = postRecord?.getLinkedRecords('comments') || []
+        postRecord?.setLinkedRecords([...commentRecords, newCommentRecord], 'comments')
+      },
+    }),
+    [id]
+  )
+
+  useSubscription<PostSubscriptionType>(config)
 
   const handleCommentChange = useCallback(
     (text: string) => {
@@ -59,18 +88,6 @@ function Post() {
           replyId: id,
           content: comment,
         },
-      },
-      updater: (store: RecordSourceSelectorProxy) => {
-        const postRecord = store.get(id)
-        const payload = store.getRootField('createComment')
-        const newCommentRecord = payload?.getLinkedRecord('result')
-
-        if (!newCommentRecord) {
-          return
-        }
-
-        const commentRecords = postRecord?.getLinkedRecords('comments') || []
-        postRecord?.setLinkedRecords([...commentRecords, newCommentRecord], 'comments')
       },
       onCompleted: () => {
         scrollRef.current?.scrollIntoView(false)

@@ -2,6 +2,7 @@
 schema {
   query: RootQueryType
   mutation: RootMutationType
+  subscription: RootSubscriptionType
 }
 
 type PageInfo {
@@ -29,6 +30,10 @@ type ValidationOption {
 type PostEdge {
   node: Post
   cursor: String
+}
+
+type RootSubscriptionType {
+  newComment(postId: ID!): Post!
 }
 
 type PostConnection {
