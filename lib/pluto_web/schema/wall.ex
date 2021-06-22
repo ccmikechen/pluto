@@ -16,6 +16,10 @@ defmodule PlutoWeb.Schema.Wall do
     field :content, non_null(:string)
     field :inserted_at, non_null(:naive_datetime)
 
+    field :reply_to, :post do
+      resolve(&Wall.reply_to/3)
+    end
+
     import_fields(:comment_query)
   end
 

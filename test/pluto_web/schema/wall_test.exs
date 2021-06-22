@@ -6,11 +6,14 @@ defmodule PlutoWeb.Schema.WallTest do
   describe "listPosts query" do
     @query """
     {
-      listPosts(first: 5) {
+      listPosts(first: 1) {
         edges {
           node {
             content
             insertedAt
+            replyTo {
+              id
+            }
           }
         }
       }
@@ -18,7 +21,9 @@ defmodule PlutoWeb.Schema.WallTest do
     """
 
     test "returns list of post with pagination", %{conn: conn} do
-      %{content: content, inserted_at: inserted_at} = insert(:post)
+      %{id: replied_id} = insert(:post)
+      %{content: content, inserted_at: inserted_at} = insert(:post, reply_id: replied_id)
+      replied_global_id = to_global_id("Post", replied_id)
 
       conn =
         post(conn, "/api", %{
@@ -30,7 +35,8 @@ defmodule PlutoWeb.Schema.WallTest do
           %{
             "node" => %{
               "content" => content,
-              "insertedAt" => NaiveDateTime.to_iso8601(inserted_at)
+              "insertedAt" => NaiveDateTime.to_iso8601(inserted_at),
+              "replyTo" => %{"id" => replied_global_id}
             }
           }
         ]

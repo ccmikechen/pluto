@@ -4,6 +4,8 @@ defmodule PlutoWeb.Schema do
   use Absinthe.Schema
   use Absinthe.Relay.Schema, :modern
 
+  import Absinthe.Resolution.Helpers, only: [dataloader: 1]
+
   import_types(__MODULE__.Wall)
   import_types(__MODULE__.Replies)
   import_types(Absinthe.Type.Custom)
@@ -37,5 +39,17 @@ defmodule PlutoWeb.Schema do
 
   subscription do
     import_fields(:replies_subscription)
+  end
+
+  def context(context) do
+    loader =
+      Dataloader.new()
+      |> Dataloader.add_source(Pluto.Wall, Pluto.Wall.data())
+
+    Map.put(context, :loader, loader)
+  end
+
+  def plugins do
+    [Absinthe.Middleware.Dataloader] ++ Absinthe.Plugin.defaults()
   end
 end

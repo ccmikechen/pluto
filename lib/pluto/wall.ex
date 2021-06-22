@@ -29,4 +29,8 @@ defmodule Pluto.Wall do
   def get_post(id) do
     Repo.get(Post, id)
   end
+
+  def data do
+    Dataloader.Ecto.new(Repo)
+  end
 end
