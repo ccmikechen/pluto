@@ -1,15 +1,29 @@
 import graphql from 'babel-plugin-relay/macro'
 import { useFragment } from 'react-relay'
 import { PostListItem_post$key } from './__generated__/PostListItem_post.graphql'
-import { CardActionArea, Card, CardContent, Typography, styled } from '@material-ui/core'
+import { CardActionArea, Card, CardContent, Typography, styled, Box } from '@material-ui/core'
 import { getTimeAgo } from '../app/time'
-import { useCallback } from 'react'
+import React, { useCallback } from 'react'
+import ReplyToLink from './ReplyToLink'
 
 const StyledCard = styled(Card)({
+  display: 'flex',
   background: '#40516E',
   marginBottom: '0.8rem',
-  height: '6rem',
-  contentVisibility: 'auto',
+  height: '7.2rem',
+})
+
+const ActionArea = styled(CardActionArea)({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  flex: 1,
+})
+
+const StyledCardContent = styled(CardContent)({
+  flex: 0.8,
+  paddingTop: 0,
+  paddingBottom: 0,
 })
 
 const Timestamp = styled(Typography)({
@@ -21,6 +35,9 @@ const userFragment = graphql`
     id
     content
     insertedAt
+    replyTo {
+      ...ReplyToLink_post
+    }
   }
 `
 
@@ -38,18 +55,20 @@ function PostListItem(props: Props) {
   }, [onPostClick, post])
 
   return (
-    <div key={post.id} data-testid="postCard">
-      <StyledCard>
-        <CardActionArea onClick={handlePostClick}>
-          <CardContent>
-            <Typography variant="h4" color="primary">
-              {post.content}
-            </Typography>
-            <Timestamp variant="subtitle2">{getTimeAgo(new Date(post.insertedAt))}</Timestamp>
-          </CardContent>
-        </CardActionArea>
-      </StyledCard>
-    </div>
+    <StyledCard key={post.id} data-testid="postCard">
+      <ActionArea onClick={handlePostClick}>
+        <Box flex={0.1} visibility={post.replyTo ? 'visible' : 'hidden'}>
+          <ReplyToLink post={post.replyTo!} />
+        </Box>
+        <StyledCardContent>
+          <Typography variant="h4" color="primary">
+            {post.content}
+          </Typography>
+          <Timestamp variant="subtitle2">{getTimeAgo(new Date(post.insertedAt))}</Timestamp>
+        </StyledCardContent>
+        <Box flex={0.1} />
+      </ActionArea>
+    </StyledCard>
   )
 }
 

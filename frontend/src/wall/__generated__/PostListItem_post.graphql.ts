@@ -8,6 +8,9 @@ export type PostListItem_post = {
     readonly id: string;
     readonly content: string;
     readonly insertedAt: string;
+    readonly replyTo: {
+        readonly " $fragmentRefs": FragmentRefs<"ReplyToLink_post">;
+    } | null;
     readonly " $refType": "PostListItem_post";
 };
 export type PostListItem_post$data = PostListItem_post;
@@ -44,10 +47,26 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "name": "insertedAt",
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Post",
+      "kind": "LinkedField",
+      "name": "replyTo",
+      "plural": false,
+      "selections": [
+        {
+          "args": null,
+          "kind": "FragmentSpread",
+          "name": "ReplyToLink_post"
+        }
+      ],
+      "storageKey": null
     }
   ],
   "type": "Post",
   "abstractKey": null
 };
-(node as any).hash = 'c7130602f8aa39fe9b39f4b13a2b6dcf';
+(node as any).hash = '1e96e0f1963ae1a34ca58c8b3f12df57';
 export default node;

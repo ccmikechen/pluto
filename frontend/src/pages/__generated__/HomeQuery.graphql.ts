@@ -24,6 +24,10 @@ fragment PostListItem_post on Post {
   id
   content
   insertedAt
+  replyTo {
+    ...ReplyToLink_post
+    id
+  }
 }
 
 fragment PostList_root on RootQueryType {
@@ -43,6 +47,10 @@ fragment PostList_root on RootQueryType {
   }
 }
 
+fragment ReplyToLink_post on Post {
+  id
+}
+
 fragment Wall_root on RootQueryType {
   ...PostList_root
 }
@@ -55,7 +63,14 @@ var v0 = [
     "name": "first",
     "value": 10
   }
-];
+],
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": [],
@@ -102,13 +117,7 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "id",
-                    "storageKey": null
-                  },
+                  (v1/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -121,6 +130,18 @@ return {
                     "args": null,
                     "kind": "ScalarField",
                     "name": "insertedAt",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Post",
+                    "kind": "LinkedField",
+                    "name": "replyTo",
+                    "plural": false,
+                    "selections": [
+                      (v1/*: any*/)
+                    ],
                     "storageKey": null
                   },
                   {
@@ -183,12 +204,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "0fac2aa74f8f888dc4ae8202949bee76",
+    "cacheID": "702dc4c9aab1c9d025268b5fed0d692d",
     "id": null,
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery {\n  ...Wall_root\n}\n\nfragment PostListItem_post on Post {\n  id\n  content\n  insertedAt\n}\n\nfragment PostList_root on RootQueryType {\n  posts: listPosts(first: 10) {\n    edges {\n      node {\n        id\n        ...PostListItem_post\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment Wall_root on RootQueryType {\n  ...PostList_root\n}\n"
+    "text": "query HomeQuery {\n  ...Wall_root\n}\n\nfragment PostListItem_post on Post {\n  id\n  content\n  insertedAt\n  replyTo {\n    ...ReplyToLink_post\n    id\n  }\n}\n\nfragment PostList_root on RootQueryType {\n  posts: listPosts(first: 10) {\n    edges {\n      node {\n        id\n        ...PostListItem_post\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment ReplyToLink_post on Post {\n  id\n}\n\nfragment Wall_root on RootQueryType {\n  ...PostList_root\n}\n"
   }
 };
 })();

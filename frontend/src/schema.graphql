@@ -59,6 +59,8 @@ type Post implements Node {
   content: String!
 
   insertedAt: NaiveDateTime!
+
+  replyTo: Post
 }
 
 input CreateCommentInput {

@@ -30,6 +30,10 @@ fragment PostListItem_post on Post {
   id
   content
   insertedAt
+  replyTo {
+    ...ReplyToLink_post
+    id
+  }
 }
 
 fragment PostList_root_1G22uz on RootQueryType {
@@ -47,6 +51,10 @@ fragment PostList_root_1G22uz on RootQueryType {
       hasNextPage
     }
   }
+}
+
+fragment ReplyToLink_post on Post {
+  id
 }
 */
 
@@ -74,7 +82,14 @@ v1 = [
     "name": "first",
     "variableName": "count"
   }
-];
+],
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -132,13 +147,7 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "id",
-                    "storageKey": null
-                  },
+                  (v2/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -151,6 +160,18 @@ return {
                     "args": null,
                     "kind": "ScalarField",
                     "name": "insertedAt",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Post",
+                    "kind": "LinkedField",
+                    "name": "replyTo",
+                    "plural": false,
+                    "selections": [
+                      (v2/*: any*/)
+                    ],
                     "storageKey": null
                   },
                   {
@@ -213,12 +234,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "2a99216d81ac33a40ee026315389eafb",
+    "cacheID": "64c497c12ff732ceea4ba64d79e10799",
     "id": null,
     "metadata": {},
     "name": "PostListPaginationQuery",
     "operationKind": "query",
-    "text": "query PostListPaginationQuery(\n  $count: Int = 10\n  $cursor: String\n) {\n  ...PostList_root_1G22uz\n}\n\nfragment PostListItem_post on Post {\n  id\n  content\n  insertedAt\n}\n\nfragment PostList_root_1G22uz on RootQueryType {\n  posts: listPosts(first: $count, after: $cursor) {\n    edges {\n      node {\n        id\n        ...PostListItem_post\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query PostListPaginationQuery(\n  $count: Int = 10\n  $cursor: String\n) {\n  ...PostList_root_1G22uz\n}\n\nfragment PostListItem_post on Post {\n  id\n  content\n  insertedAt\n  replyTo {\n    ...ReplyToLink_post\n    id\n  }\n}\n\nfragment PostList_root_1G22uz on RootQueryType {\n  posts: listPosts(first: $count, after: $cursor) {\n    edges {\n      node {\n        id\n        ...PostListItem_post\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment ReplyToLink_post on Post {\n  id\n}\n"
   }
 };
 })();
