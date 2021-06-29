@@ -1,0 +1,37 @@
+version: "3"
+networks:
+  development:
+volumes:
+  db_data:
+  shared_data:
+  deps:
+services:
+  db:
+    image: postgres:13.1-alpine
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - shared_data:/var/shared
+    networks:
+      - development
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+  backend:
+    build:
+      context: .
+    volumes:
+      - .:/app
+      - deps:/app/deps
+      - shared_data:/var/shared
+    networks:
+      - development
+    ports:
+      - 4000:4000
+    environment:
+      DB_HOST: db
+    stdin_open: true
+    tty: true
+    depends_on:
+      - db
