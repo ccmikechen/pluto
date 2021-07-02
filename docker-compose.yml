@@ -5,6 +5,7 @@ volumes:
   db_data:
   shared_data:
   deps:
+  node_modules:
 services:
   db:
     image: postgres:13.1-alpine
@@ -35,3 +36,16 @@ services:
     tty: true
     depends_on:
       - db
+  frontend:
+    build:
+      context: ./frontend/
+    volumes:
+      - ./frontend/:/app
+    networks:
+      - development
+    entrypoint: docker-entrypoint.sh
+    command: ["yarn", "start"]
+    ports:
+      - 3000:3000
+    stdin_open: true
+    tty: true
