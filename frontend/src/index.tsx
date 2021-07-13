@@ -20,9 +20,9 @@ const theme = createMuiTheme({
   typography: {
     body1: {
       fontSize: '2rem',
-      textAlign: 'justify'
-    }
-  }
+      textAlign: 'justify',
+    },
+  },
 })
 
 ReactDOM.render(

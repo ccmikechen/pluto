@@ -7,10 +7,10 @@ function App() {
     <Router>
       <Switch>
         <Route exact={true} path="/">
-          <Home></Home>
+          <Home />
         </Route>
         <Route exact={true} path="/post/:id">
-          <Post></Post>
+          <Post />
         </Route>
       </Switch>
     </Router>

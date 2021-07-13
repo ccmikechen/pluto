@@ -37,7 +37,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
-    "lint": "tslint -c tslint.json src/**/*.{ts,tsx} --fix --format verbose",
+    "lint-fix": "tslint -c tslint.json src/*.{ts,tsx} src/**/*.{ts,tsx} --fix --format verbose",
+    "lint": "tslint -c tslint.json src/*.{ts,tsx} src/**/*.{ts,tsx} --format verbose",
     "relay": "relay-compiler --src ./src --schema ./src/schema.graphql --language typescript --extensions ts tsx",
     "update-schema": "cd ..; mix absinthe.schema.sdl --schema PlutoWeb.Schema ./frontend/src/schema.graphql"
   },

@@ -9,8 +9,8 @@ import { useHistory } from 'react-router-dom'
 const StyledLink = styled(Link)({
   padding: '0px 16px',
   color: '#FFFFFF3A',
-  display: "flex",
-  alignItems: "center",
+  display: 'flex',
+  alignItems: 'center',
 })
 
 const userFragment = graphql`
