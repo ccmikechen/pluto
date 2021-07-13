@@ -1,6 +1,6 @@
 version: "3"
 networks:
-  development:
+  pluto:
 volumes:
   db_data:
   shared_data:
@@ -13,7 +13,7 @@ services:
       - db_data:/var/lib/postgresql/data
       - shared_data:/var/shared
     networks:
-      - development
+      - pluto
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -23,29 +23,13 @@ services:
     build:
       context: .
     volumes:
-      - .:/app
       - deps:/app/deps
-      - shared_data:/var/shared
     networks:
-      - development
-    ports:
-      - 4000:4000
-    environment:
-      DB_HOST: db
-    stdin_open: true
-    tty: true
-    depends_on:
-      - db
+      - pluto
   frontend:
     build:
       context: ./frontend/
     volumes:
-      - ./frontend/:/app
+      - node_modules:/app/node_modules
     networks:
-      - development
-    entrypoint: docker-entrypoint.sh
-    command: ["yarn", "start"]
-    ports:
-      - 3000:3000
-    stdin_open: true
-    tty: true
+      - pluto

@@ -1,6 +1,23 @@
-FROM node:14-alpine
+FROM node:14-alpine as dev
 WORKDIR /app
 COPY package.json ./
 RUN yarn install
 COPY . .
 CMD [ "yarn", "start" ]
+
+FROM node:14-alpine as build
+ARG API_URL
+ARG SOCKET_URL
+ENV REACT_APP_API_URL=$API_URL
+ENV REACT_APP_SOCKET_URL=$SOCKET_URL
+
+WORKDIR /app
+COPY package.json ./
+RUN yarn install
+COPY . .
+RUN yarn run build
+
+FROM nginx:stable-alpine as prod
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
