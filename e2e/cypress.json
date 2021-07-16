@@ -1,4 +1,5 @@
 {
   "testFiles": "**/*.feature",
-  "baseUrl": "http://localhost:4001"
+  "baseUrl": "http://localhost:4001",
+  "defaultCommandTimeout": 8000
 }

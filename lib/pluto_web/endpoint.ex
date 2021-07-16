@@ -51,5 +51,6 @@ defmodule PlutoWeb.Endpoint do
   plug Plug.Session, @session_options
 
   plug CORSPlug
+  plug PlugHeartbeat, path: "/health"
   plug PlutoWeb.Router
 end

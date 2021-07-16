@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:4002'
+const API_URL = Cypress.env('API_URL') || 'http://localhost:4000'
 
 Cypress.Commands.add('checkoutdb', () => {
   cy.request('POST', `${API_URL}/e2e/db/checkout`).as('checkoutDb')

@@ -53,7 +53,8 @@ defmodule Pluto.MixProject do
       {:ecto_psql_extras, "~> 0.2"},
       {:cors_plug, "~> 2.0"},
       {:ex_machina, "~> 2.7.0"},
-      {:mix_test_watch, "~> 1.0", only: :dev, runtime: false}
+      {:mix_test_watch, "~> 1.0", only: :dev, runtime: false},
+      {:plug_heartbeat, "~> 1.0"}
     ]
   end
 
