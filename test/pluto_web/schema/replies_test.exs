@@ -88,30 +88,5 @@ defmodule PlutoWeb.Schema.RepliesTest do
 
       [post_global_id: post_global_id, ref: ref]
     end
-
-    test "triggered by create comment mutation", %{
-      conn: conn,
-      ref: ref,
-      post_global_id: post_global_id
-    } do
-      query = """
-      mutation($input: CreateCommentInput!) {
-        createComment(input: $input){
-          result {
-            content
-          }
-        }
-      }
-      """
-
-      input = %{input: %{content: "write something", reply_id: post_global_id}}
-
-      post(conn, "/api", %{
-        "query" => query,
-        "variables" => input
-      })
-
-      assert_subscription(ref, %{"newComent" => %{"content" => "write something"}})
-    end
   end
 end

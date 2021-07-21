@@ -1,19 +1,27 @@
 services:
   backend:
     build:
+      dockerfile: .circleci/images/Dockerfile.backend
       args:
         DATABASE_URL: ${DATABASE_URL}
         SECRET_KEY_BASE: ${SECRET_KEY_BASE}
-      target: prod
-    ports:
-      - 4000:4000
     command: ["bin/pluto", "start"]
   frontend:
     build:
+      dockerfile: ../.circleci/images/Dockerfile.frontend
       args:
         API_URL: ${API_URL}
         SOCKET_URL: ${SOCKET_URL}
-      target: prod
-    ports:
-      - 3000:80
     command: ["nginx", "-g", "daemon off;"]
+  nginx:
+    build:
+      context: .circleci/nginx/
+      dockerfile: ../images/Dockerfile.nginx
+    ports:
+      - 80:80
+    command: ["nginx", "-g", "daemon off;"]
+    networks:
+      - pluto
+    depends_on:
+      - frontend
+      - backend
